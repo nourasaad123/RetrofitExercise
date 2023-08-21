@@ -1,3 +1,3 @@
 package com.example.productwithapi.data.module
 
-data class LoginRequest(val userName:String,val password:String)
+data class LoginRequest(val username:String,val password:String)

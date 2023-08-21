@@ -1,10 +1,10 @@
-package com.example.productwithapi
+package com.example.productwithapi.persentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,28 +13,26 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import com.example.productwithapi.ui.theme.ProductWithApiTheme
+import com.example.productwithapi.domain.model.CustomList
+import com.example.productwithapi.persentation.ui.ListsViewModel
+import com.example.productwithapi.persentation.ui.theme.ProductWithApiTheme
+import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : ComponentActivity() {
-    val composeViewModel by viewModels<ListsViewModel>()
+    private val composeViewModel by viewModels<ListsViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,6 +42,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    LaunchedEffect(key1 = true) {
+                        composeViewModel.sharedFlow.collectLatest {
+                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_LONG)
+                        }
+                    }
                     Greeting(composeViewModel = composeViewModel)
                 }
             }
@@ -74,7 +77,8 @@ fun Greeting(composeViewModel: ListsViewModel) {
 
         Row(modifier = Modifier.fillMaxWidth(), Arrangement.SpaceAround) {
             Button(modifier = Modifier
-                .padding(1.dp).weight(1f),
+                .padding(1.dp)
+                .weight(1f),
                 onClick = { composeViewModel.addProduct() }) {
                 Text(text = "Ad")
             }
@@ -100,8 +104,10 @@ fun Greeting(composeViewModel: ListsViewModel) {
             }
 
         }
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        CustomList(list = composeViewModel.productList.value)
 
+        //    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        /*
             items(composeViewModel.quoteList.value) {
 
                 ListItem(
@@ -115,11 +121,14 @@ fun Greeting(composeViewModel: ListsViewModel) {
                 Spacer(modifier = Modifier.height(20.dp))
             }
 
+*/
+        /*
+
             items(composeViewModel.productList.value) {
 
                 ListItem(
                     headlineText = {
-                        Text(text = it.brand)
+                        Text(text = "${it.brand}")
                     },
 
                     supportingText = {
@@ -130,6 +139,7 @@ fun Greeting(composeViewModel: ListsViewModel) {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
             }
+            /*
             items(composeViewModel.userList.value) {
                 ListItem(
                     headlineText = {
@@ -153,7 +163,9 @@ fun Greeting(composeViewModel: ListsViewModel) {
                 Spacer(modifier = Modifier.height(20.dp))
             }
 
-        }
+             */
+*/
     }
+
 }
 

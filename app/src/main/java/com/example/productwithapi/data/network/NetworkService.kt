@@ -1,4 +1,4 @@
-package com.example.productwithapi.data
+package com.example.productwithapi.data.network
 
 import com.example.productwithapi.data.module.LoginRequest
 import com.example.productwithapi.data.module.LoginResponse
@@ -31,7 +31,7 @@ interface NetworkService {
     suspend fun addNewProduct(@Body productRequest: ProductRequest): Any
 
     @POST("auth/login")
-    suspend fun login(@Body loginRequset: LoginRequest): LoginResponse
+    suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
     @PUT("products/{productId}")
     suspend fun updateProduct(
@@ -46,6 +46,6 @@ interface NetworkService {
     suspend fun searchForProductList(@Query("q") searchQuery: String): ProductModel
 
     @GET("auth/products")
-    suspend fun getAuthProductList(@Header("Authorization") apikey: String): ProductModel
+    suspend fun getAuthProductList(@Header("Authorization") apikey: String): LoginResponse
 
 }
